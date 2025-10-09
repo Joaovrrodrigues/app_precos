@@ -1,6 +1,7 @@
-import 'package:app_precos/app/pages/principal_page.dart';
+import 'package:app_precos/app/pages/main_page.dart';
+import 'package:app_precos/app/pages/list_page.dart';
 import 'package:flutter/material.dart';
-import '../widgets/custom_bottom_nav_bar.dart';
+import '../widgets/bottom_nav_bar.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -14,11 +15,11 @@ class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   final List<Widget> _pages = [
-  PrincipalPage(),
-  PrincipalPage(),
-  PrincipalPage(),
-  PrincipalPage(),
-  PrincipalPage(),
+  MainPage(),
+  ListPage(),
+  MainPage(),
+  MainPage(),
+  MainPage(),
 ];
 
   void _onItemTapped(int index) {
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_selectedIndex],
-      bottomNavigationBar: CustomBottomNavBar(
+      bottomNavigationBar: BottomNavBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),

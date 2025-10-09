@@ -1,6 +1,5 @@
-import 'package:app_precos/app/pages/login_page';
+import 'package:app_precos/app/pages/login_page.dart';
 import 'package:flutter/material.dart';
-import 'pages/home_page.dart'; // adicione o import aqui
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});

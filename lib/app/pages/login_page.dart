@@ -21,7 +21,7 @@ class LoginPage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Spacer(flex: 1), // Logo + título
+            const Spacer(flex: 1),
             const Icon(Icons.shopping_cart, size: 64, color: Colors.white),
             const SizedBox(height: 16),
             Text(
@@ -42,13 +42,13 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 48),
-            const Spacer(flex: 1), // Espaço entre título e botões
+            const Spacer(flex: 1), 
             ElevatedButton.icon(
              onPressed: () {             
             },             
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
+                backgroundColor: const Color.fromARGB(255, 139, 231, 142),
+                foregroundColor: const Color.fromARGB(255, 39, 39, 39),
                 minimumSize: const Size(double.infinity, 50),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
