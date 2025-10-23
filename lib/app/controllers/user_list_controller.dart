@@ -12,7 +12,7 @@ class ListController extends ChangeNotifier {
   bool isLoading = false;
   String? error;
 
-  Future<void> fetchLists({int userId = 1}) async {
+  Future<void> fetchLists({int userId = 3}) async {
     isLoading = true;
     error = null;
     notifyListeners();

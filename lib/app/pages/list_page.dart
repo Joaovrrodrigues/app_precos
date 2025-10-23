@@ -1,9 +1,10 @@
 import 'package:app_precos/app/controllers/user_list_controller.dart'
     show ListController;
+import 'package:app_precos/app/pages/items_list_page.dart';
 import 'package:app_precos/app/repositories/user_list_repositorie.dart';
 import 'package:app_precos/app/services/user_list_service.dart';
 import 'package:app_precos/app/src/models/shopping_list_model.dart'
-    show ShoppingList; 
+    show ShoppingList;
 import 'package:flutter/material.dart';
 import 'package:app_precos/app/widgets/create_list_dialog.dart';
 import 'package:provider/provider.dart'
@@ -16,8 +17,7 @@ class ListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) =>
-          ListController(UserListRepository(UserListService()))
-            ..fetchLists(), 
+          ListController(UserListRepository(UserListService()))..fetchLists(),
       child: const _ListPageContent(),
     );
   }
@@ -140,7 +140,13 @@ class _ListPageContentState extends State<_ListPageContent> {
                             child: InkWell(
                               borderRadius: BorderRadius.circular(16),
                               onTap: () {
-                                
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => ItemsListPage(
+                                      shoppingList: list,
+                                    ),
+                                  ),
+                                );
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(16),
@@ -165,13 +171,22 @@ class _ListPageContentState extends State<_ListPageContent> {
                                             ),
                                           ),
                                           const SizedBox(height: 4),
-                                          const Text(
-                                            'Compras para o mês',
+                                           Text(
+                                            list.description ?? "",
                                             style: TextStyle(
                                               color: Colors.greenAccent,
                                               fontSize: 13,
                                             ),
                                           ),
+                                          const SizedBox(height: 2),
+                                         Text(
+                                          'R\$ ${list.totalPrice.toString()}',
+                                           style: TextStyle(
+                                            color: Colors.greenAccent,
+                                            fontSize: 15
+                                           ),
+                                         )
+
                                         ],
                                       ),
                                     ),
