@@ -68,10 +68,9 @@ class _CreateListDialogState extends State<CreateListDialog> {
                   final descricao = _descricaoController.text.trim();
 
                   if (nome.isNotEmpty) {
-                    Navigator.of(context).pop({
-                      'nome': nome,
-                      'descricao': descricao,
-                    });
+                    Navigator.of(
+                      context,
+                    ).pop({'nome': nome, 'descricao': descricao});
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -80,8 +79,10 @@ class _CreateListDialogState extends State<CreateListDialog> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
                 ),
                 child: const Text('Criar lista'),
               ),

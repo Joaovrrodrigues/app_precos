@@ -3,6 +3,7 @@ import 'package:app_precos/app/controllers/user_list_controller.dart'
 import 'package:app_precos/app/pages/items_list_page.dart';
 import 'package:app_precos/app/repositories/user_list_repositorie.dart';
 import 'package:app_precos/app/services/user_list_service.dart';
+import 'package:app_precos/app/src/models/shopping_item_model.dart';
 import 'package:app_precos/app/src/models/shopping_list_model.dart'
     show ShoppingList;
 import 'package:flutter/material.dart';
@@ -62,7 +63,7 @@ class _ListPageContentState extends State<_ListPageContent> {
     return Consumer<ListController>(
       builder: (context, controller, _) {
         final isLoading = controller.isLoading;
-        final hasError = controller.error != null;
+        final hasError = controller.errorMessage != null;
 
         if (!isLoading &&
             filteredLists.isEmpty &&
@@ -93,7 +94,7 @@ class _ListPageContentState extends State<_ListPageContent> {
               : hasError
               ? Center(
                   child: Text(
-                    'Erro ao carregar listas: ${controller.error}',
+                    'Erro ao carregar listas: ${controller.errorMessage}',
                     style: const TextStyle(color: Colors.red),
                   ),
                 )
@@ -142,9 +143,8 @@ class _ListPageContentState extends State<_ListPageContent> {
                               onTap: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (_) => ItemsListPage(
-                                      shoppingList: list,
-                                    ),
+                                    builder: (_) =>
+                                        ItemsListPage(shoppingList: list),
                                   ),
                                 );
                               },
@@ -171,7 +171,7 @@ class _ListPageContentState extends State<_ListPageContent> {
                                             ),
                                           ),
                                           const SizedBox(height: 4),
-                                           Text(
+                                          Text(
                                             list.description ?? "",
                                             style: TextStyle(
                                               color: Colors.greenAccent,
@@ -179,16 +179,65 @@ class _ListPageContentState extends State<_ListPageContent> {
                                             ),
                                           ),
                                           const SizedBox(height: 2),
-                                         Text(
-                                          'R\$ ${list.totalPrice.toString()}',
-                                           style: TextStyle(
-                                            color: Colors.greenAccent,
-                                            fontSize: 15
-                                           ),
-                                         )
-
+                                          Text(
+                                            'R\$ ${list.totalPrice.toString()}',
+                                            style: TextStyle(
+                                              color: Colors.greenAccent,
+                                              fontSize: 15,
+                                            ),
+                                          ),
                                         ],
                                       ),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.delete,
+                                        color: Colors.redAccent,
+                                      ),
+                                      onPressed: () async {
+                                        final confirm = await showDialog<bool>(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                            title: const Text('Confirmação'),
+                                            content: Text(
+                                              'Deseja realmente excluir a lista "${list.name}"?',
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.of(
+                                                  context,
+                                                ).pop(false),
+                                                child: const Text('Cancelar'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () => Navigator.of(
+                                                  context,
+                                                ).pop(true),
+                                                child: const Text(
+                                                  'Excluir',
+                                                  style: TextStyle(
+                                                    color: Colors.red,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+
+                                        if (confirm == true) {
+                                          final controller = context
+                                              .read<ListController>();
+                                          await controller.deleteList(
+                                            3,
+                                            list.id,
+                                          );
+                                          setState(() {
+                                            filteredLists = List.from(
+                                              controller.lists,
+                                            );
+                                          });
+                                        }
+                                      },
                                     ),
                                     const Icon(
                                       Icons.arrow_forward_ios,
@@ -213,21 +262,32 @@ class _ListPageContentState extends State<_ListPageContent> {
               );
 
               if (result != null) {
-                setState(() {
-                  controller.lists.add(
-                    ShoppingList(
-                      id: (controller.lists.length + 1).toString(),
-                      name: result['nome']!,
-                      description: result['description'],
-                      totalPrice:
-                          double.tryParse(result['totalPrice'] ?? '') ?? 0.0,
-                      discountTotalPrice:
-                          double.tryParse(result['discountTotalPrice'] ?? '') ??
-                          0.0,
-                      items: [],
+                final controller = context.read<ListController>();
+
+                final newList = ShoppingList(
+                  id: '',
+                  name: result['nome'] ?? 'Nova Lista',
+                  description: result['descricao'] ?? '',
+                  totalPrice: 0.0,
+                  discountTotalPrice: 0.0,
+                  items: [
+                    ShoppingItem(
+                      name: '',
+                      brand: '',
+                      price: 10.00,
+                      discountValue: 0.00,
+                      isPurchased: true,
+                      id: 'adc482e4-4b41-4f08-aef5-d97af8d56886',
+                      quantity: 6,
+                      unit: 'un',
                     ),
-                  );
-                  _filterLists();
+                  ],
+                );
+
+                await controller.addNewList(3, newList);
+
+                setState(() {
+                  filteredLists = List.from(controller.lists);
                 });
               }
             },
@@ -237,6 +297,7 @@ class _ListPageContentState extends State<_ListPageContent> {
             shape: const CircleBorder(),
             child: const Icon(Icons.add),
           ),
+
           floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         );
       },

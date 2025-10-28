@@ -17,6 +17,16 @@ class ShoppingList {
     required this.items,
   });
 
+  Map<String, dynamic> toJson() {
+    return {
+      "Name": name,
+      "Description": description,
+      "TotalPrice": totalPrice,
+      "DiscountTotalPrice": discountTotalPrice,
+      "items": items.map((e) => e.toJson()).toList(),
+    };
+  }
+
   factory ShoppingList.fromJson(Map<String, dynamic> json) {
     var itemsJson = json['items'] as List<dynamic>? ?? [];
     var itemsList = itemsJson.map((e) => ShoppingItem.fromJson(e)).toList();
@@ -26,7 +36,8 @@ class ShoppingList {
       name: json['name'],
       description: json['description'],
       totalPrice: (json['totalPrice'] as num?)?.toDouble() ?? 0.0,
-      discountTotalPrice: (json['discountTotalPrice'] as num?)?.toDouble() ?? 0.0,
+      discountTotalPrice:
+          (json['discountTotalPrice'] as num?)?.toDouble() ?? 0.0,
       items: itemsList,
     );
   }

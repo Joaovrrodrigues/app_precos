@@ -21,6 +21,20 @@ class ShoppingItem {
     required this.isPurchased,
   });
 
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "name": name,
+      "description": description,
+      "quantity": quantity,
+      "unit": unit,
+      "brand": brand,
+      "price": price,
+      "discountValue": discountValue,
+      "isPurchased": isPurchased,
+    };
+  }
+
   factory ShoppingItem.fromJson(Map<String, dynamic> json) {
     return ShoppingItem(
       id: json['id'],
