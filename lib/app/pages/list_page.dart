@@ -189,6 +189,13 @@ class _ListPageContentState extends State<_ListPageContent> {
                                         ],
                                       ),
                                     ),
+                                       IconButton(
+                                      icon: const Icon(
+                                        Icons.edit,
+                                        color: Color.fromARGB(255, 255, 255, 255),
+                                      ),
+                                      onPressed: () => {}                                        
+                                    ) , 
                                     IconButton(
                                       icon: const Icon(
                                         Icons.delete,
@@ -238,12 +245,7 @@ class _ListPageContentState extends State<_ListPageContent> {
                                           });
                                         }
                                       },
-                                    ),
-                                    const Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Colors.white54,
-                                      size: 16,
-                                    ),
+                                    )                                    
                                   ],
                                 ),
                               ),

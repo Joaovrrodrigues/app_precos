@@ -32,8 +32,8 @@ class ListController extends ChangeNotifier {
       final deletedId = await _repository.deleteList(listId, userId);
 
       if (deletedId != null) {
-        // lists.removeWhere((list) => list.id == listId);
-        // notifyListeners();
+        lists.removeWhere((list) => list.id == listId);
+        notifyListeners();
         await fetchLists(userId: userId);
       }
 
