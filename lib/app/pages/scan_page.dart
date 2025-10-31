@@ -160,12 +160,68 @@ class QRScannerScreen extends StatelessWidget {
           for (final barcode in barcodes) {
             final String? code = barcode.rawValue;
             if (code != null) {
-              Navigator.pop(context, code);
+              final nfceKey = extractNfceKey(code);
+              if (nfceKey != null) {
+                Navigator.pop(context, nfceKey);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('QR Code inválido para nota fiscal.'),
+                  ),
+                );
+              }
               break;
             }
           }
         },
       ),
     );
+  }
+}
+// class QRScannerScreen extends StatelessWidget {
+//   const QRScannerScreen({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {   
+//     const fakeQrUrl =
+//         'https://nfeweb.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe?p=52250906948636000146650180001466341002356983%7C2%7C1%7C1%7Ca74b2cc3f9e1050c96f05d758042063f1f84bb4b';
+
+//     return Scaffold(
+//       appBar: AppBar(title: const Text('Simulador de QR Code')),
+//       body: Center(
+//         child: ElevatedButton(
+//           onPressed: () {
+//             final nfceKey = extractNfceKey(fakeQrUrl);
+//             if (nfceKey != null) {
+//               Navigator.pop(context, nfceKey);
+//             } else {
+//               ScaffoldMessenger.of(context).showSnackBar(
+//                 const SnackBar(
+//                   content: Text('Erro: QR Code inválido'),
+//                 ),
+//               );
+//             }
+//           },
+//           child: const Text('Simular leitura de QR Code'),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+String? extractNfceKey(String qrCodeUrl) {
+  try {
+    //https://nfeweb.sefaz.go.gov.br/nfeweb/sites/nfce/danfeNFCe?p=52250906948636000146650180001466341002356983%7C2%7C1%7C1%7Ca74b2cc3f9e1050c96f05d758042063f1f84bb4b  
+    final uri = Uri.parse(qrCodeUrl);
+    final p = uri.queryParameters['p'];
+    if (p == null) return null;
+
+    final key = p.split('|').first;
+    if (key.length == 44 && RegExp(r'^\d{44}$').hasMatch(key)) {
+      return key;
+    }
+    return null;
+  } catch (e) {
+    return null;
   }
 }
