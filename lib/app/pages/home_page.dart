@@ -1,5 +1,6 @@
 import 'package:app_precos/app/pages/main_page.dart';
 import 'package:app_precos/app/pages/list_page.dart';
+import 'package:app_precos/app/pages/profile_page.dart';
 import 'package:app_precos/app/pages/scan_page.dart';
 import 'package:flutter/material.dart';
 import '../widgets/bottom_nav_bar.dart';
@@ -20,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   ListPage(),
   ScanPage(),
   MainPage(),
-  MainPage(),
+  ProfilePage(),
 ];
 
   void _onItemTapped(int index) {
