@@ -19,7 +19,6 @@ class BottomNavBar extends StatelessWidget {
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Início'),
         BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Minhas Listas'),
         BottomNavigationBarItem(icon: Icon(Icons.qr_code_scanner_rounded), label: 'scannear'),
-        BottomNavigationBarItem(icon: Icon(Icons.sell), label: 'Ofertas'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Menu'),        
       ],
     );

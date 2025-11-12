@@ -20,7 +20,6 @@ class _HomePageState extends State<HomePage> {
   MainPage(),
   ListPage(),
   ScanPage(),
-  MainPage(),
   ProfilePage(),
 ];
 

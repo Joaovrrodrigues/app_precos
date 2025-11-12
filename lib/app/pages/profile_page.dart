@@ -149,8 +149,8 @@ class ProfilePage extends StatelessWidget {
                 icon: const Icon(Icons.logout),
                 label: const Text('Sair da conta'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 139, 231, 142),
-                  foregroundColor: const Color(0xFF000000),
+                  backgroundColor: const Color.fromARGB(255, 245, 65, 65),
+                  foregroundColor: const Color.fromARGB(255, 238, 238, 238),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   textStyle: const TextStyle(
                     fontSize: 18,
