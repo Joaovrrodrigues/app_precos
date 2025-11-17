@@ -1,8 +1,65 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-class ProfilePage extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+class ProfilePage extends StatefulWidget  {
   const ProfilePage({super.key});
 
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  File? _selectedImage;
+
+  Future<void> _pickImage(ImageSource source) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: source);
+
+    if (image != null) {
+      setState(() {
+        _selectedImage = File(image.path);
+      });
+    }
+  }
+
+  void _showImagePicker() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF1C1C1C),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) {
+        return SizedBox(
+          height: 160,
+          child: Column(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.photo_library, color: Colors.white),
+                title: const Text("Escolher da galeria",
+                    style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImage(ImageSource.gallery);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt, color: Colors.white),
+                title: const Text("Tirar foto agora",
+                    style: TextStyle(color: Colors.white)),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImage(ImageSource.camera);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,8 +80,7 @@ class ProfilePage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header com avatar e nome
+          children: [            
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
@@ -44,9 +100,15 @@ class ProfilePage extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  const CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage('assets/images/avatar.png'),
+                  GestureDetector(
+                    onTap: _showImagePicker,
+                    child: CircleAvatar(
+                      radius: 40,
+                      backgroundImage: _selectedImage != null
+                          ? FileImage(_selectedImage!)
+                          : const AssetImage('assets/images/avatar.png')
+                              as ImageProvider,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
@@ -74,7 +136,7 @@ class ProfilePage extends StatelessWidget {
                   ),
                   IconButton(
                     icon: const Icon(Icons.edit, color: Color(0xFF8BE78E)),
-                    onPressed: () {},
+                    onPressed: _showImagePicker,
                   )
                 ],
               ),
